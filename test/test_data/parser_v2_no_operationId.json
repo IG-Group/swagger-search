@@ -1,0 +1,56 @@
+{
+  "host": "ip1",
+  "swagger": "2.0",
+  "basePath": "/a-tomcat-service",
+  "paths": {
+    "/ping/abc": {
+      "GET": {
+        "tags": [
+          "controller"
+        ],
+        "summary": "ping pong",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "who",
+            "description": "",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/PingResponse"
+            }
+          }
+        }
+      }
+    },
+    "/search": {
+      "GET": {
+        "tags": [
+          "controller"
+        ],
+        "summary": "Search for API",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "description": "",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/SearchResponse"
+            },
+            "description": ""
+          }
+        }
+      }
+    }
+  }
+}

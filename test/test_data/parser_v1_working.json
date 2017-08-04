@@ -1,0 +1,29 @@
+{
+  "swaggerVersion": "1.2",
+  "controller-url" : "http://ip1/a-tomcat-service",
+  "swagger-path": "/abc/default",
+  "basePath": "/a-tomcat-service",
+  "resourcePath": "/somebasepath",
+  "apis": [
+    {
+      "path": "/ping/abc",
+      "description": "operationPing",
+      "operations": [
+        {
+          "method": "GET",
+          "summary": "ping pong"
+        }
+      ]
+    },
+    {
+      "path": "/search",
+      "description": "operationSearch",
+      "operations": [
+        {
+          "method": "GET",
+          "summary": "Search for API"
+        }
+      ]
+    }
+  ]
+}

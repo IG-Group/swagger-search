@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Swagger Search</title>
+
+    <link rel="icon" href="logo/swagger.png">
+
+    {% style "/bootstrap-3.3.6/css/bootstrap.min.css" %}
+    {% style "/css/swagger-search.css" %}
+    {% script "/js/jquery-1.12.3.min.js" %}
+    {% script "/js/list.min.js" %}
+    {% script "/bootstrap-3.3.6/js/bootstrap.min.js" %}
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">
+                <span><img class="pull-left img-responsive" src="logo/swagger.png"/></span> Swagger Search</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="panel panel-default col-md-4">
+            <div class="col-md-12">
+                <div class="panel-heading">
+                    <ul class="nav nav-tabs">
+                        <li class="search-title col-md-6 {% if query|empty? %}active{% endif %}">
+                            <a data-toggle="tab" href="#Services">IG Services</a></li>
+                        <li class="search-title col-md-6 {% if query|not-empty %}active{% endif %}">
+                            <a data-toggle="tab" href="#Search">Search</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-12 panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tab-content">
+
+                            <!-- IG Services Pane -->
+                            <div id="Services"
+                                 class="result-container tab-pane fade {% if query|empty? %}in active{% endif %}">
+                                <div class="list-group">
+                                    <div class="row">
+                                        <div class="col-md-5 col-md-offset-1" style="margin-bottom: 15px;">
+                                            <div class="form-group">
+                                                <input type="text" id="filter" name="filter" placeholder="Filter"
+                                                       class="form-control input-md search"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if swagger-services|not-empty %}
+                                    <ul class="list" style="list-style-type:none">
+                                        {% for service in swagger-services|sort-by:official-name %}
+                                        <li>
+                                            <button type="button" class="list-group-item swaggerApiTrigger name"
+                                                    style="margin: 3px 0px;"
+                                                    onClick="pointToSwaggerApiWithBackupRenderer('{{service.ui-base-path}}')">
+                                                {{service.official-name}}
+                                                <span class="badge">Swagger {{service.swagger-version}}</span>
+                                            </button>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+
+                            <!-- Swagger Search Pane -->
+                            <div id="Search" class="tab-pane fade {% if query|not-empty %}in active{% endif %}">
+                                <div class="input-group col-md-10 col-md-offset-1 search-input">
+                                    <input id="queryField" type="text" class="form-control input-md"
+                                           placeholder="Enter query.." value="{{query}}"/>
+                                    <span class="input-group-btn">
+                                        <button id="queryTrigger" class="btn btn-info btn-md search-box" type="button">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <div class="result-container list-group" id="queryResults">
+                                    {% if query-results|not-empty %}
+                                    {% for result in query-results|sort-by:servlet-context %}
+
+                                    <button type="button" class="list-group-item swaggerApiTrigger"
+                                            onClick="pointToSwaggerApiWithBackupRenderer('{{result.ui-api-path}}')">
+
+                                        {{result.method}} {{result.servlet-context}}{{result.path}} <span
+                                            class="badge">Swagger {{result.swagger-version}}</span>
+                                    </button>
+
+                                    {% endfor %}
+                                    {% else %}
+                                    {% if query|not-empty %}
+                                    {% if error %}
+                                    <p>{{error}}.</p>
+                                    {% else %}
+                                    <p>No results found.</p>
+                                    {% endif %}
+                                    {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div id="swaggerUIContainer" class="embed-responsive embed-responsive-4by3">
+                <iframe id="swaggerApiFrame" src="about:blank">
+                    <p>Your browser does not support iframes.</p>
+                </iframe>
+            </div>
+            <div id="renderingMessage" style="text-align: center;" class="col-md-6 col-md-offset-3">
+                <p><b>Rendering...</b></p>
+            </div>
+        </div>
+        <div id="customRenderer" class="col-md-4 pull-right">
+            <div class="input-group pull-right">
+                <span class="input-group-addon">http://</span>
+                <input id="rendererInput" type="text" class="form-control input-md"
+                       placeholder="Enter spec location to render with default ui"/>
+                                    <span class="input-group-btn">
+                                        <button id="rendererTrigger" class="btn btn-info btn-md search-box"
+                                                type="button">
+                                            Render UI
+                                        </button>
+                                    </span>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <button id="clearButton" type="button" style="margin: 10px;" class="btn btn-danger">Clear UI</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#renderingMessage").hide();
+    hideUiFrame();
+
+    // sortable list base on service name
+    var serviceList = new List('Services', {valueNames: ['name']});
+
+    $(document).keypress(function (e) {
+        if (e.which == 13) { // on enter press
+            var queryInput = $('#queryField');
+            var renderInput = $('#rendererInput');
+
+            if (queryInput.is(':focus')) {
+                executeQuery(queryInput.val());
+            } else if (renderInput.is(':focus') && $.trim(renderInput.val()).length) {
+                renderSpecFromProvidedUi(renderInput.val());
+            }
+        }
+    });
+
+    $("#clearButton").click(function () {
+        hideUiFrame();
+    });
+
+    $("#queryTrigger").click(function () {
+        executeQuery($('#queryField').val());
+    });
+
+    $("#rendererTrigger").click(function () {
+        renderSpecFromProvidedUi($('#rendererInput').val());
+    });
+
+    function pointToSwaggerApiWithBackupRenderer(url) {
+        $("#swaggerApiFrame").attr('src', url);
+        showUiFrame();
+    }
+
+    function renderSpecFromProvidedUi(specPath) {
+        // Allow user to enter url without http prefix
+        if (!specPath.startsWith("https://") && !specPath.startsWith("http://")) {
+            specPath = "http://" + specPath;
+        }
+        var url = "{{servlet-context}}/render?url=" + specPath;
+        $("#swaggerApiFrame").attr('src', url);
+        showUiFrame();
+    }
+
+    function executeQuery(query) {
+        if ($.trim(query).length) {
+            $('#queryResults').empty();
+            $.getJSON("{{servlet-context}}/api/search?query=" + query, function (data) {
+                populateQueryResults(data);
+            }).error(function (data) {
+                $("<p>" + data.responseText + ".</p>").appendTo($('#queryResults'));
+            });
+        }
+    }
+
+    function populateQueryResults(results) {
+        if (results.length) {
+            results = results.sort(function (a, b) {
+                a = a["servlet-context"];
+                b = b["servlet-context"];
+                return (a < b) ? -1 : (a > b) ? 1 : 0;
+            });
+            $.each(results, function (i, result) {
+                $("<button type=\"button\" class=\"list-group-item swaggerApiTrigger\" onClick=\"pointToSwaggerApiWithBackupRenderer('" +
+                        result["ui-api-path"] + "')\">" + result.method + " " + result["servlet-context"] + result.path + "" +
+                        "<span class=\"badge\">Swagger " + result["swagger-version"] + "</span></button>")
+                        .appendTo($('#queryResults'));
+            });
+        } else {
+            $("<p>No results found.</p>").appendTo($('#queryResults'));
+        }
+    }
+
+    function hideUiFrame() {
+        $("#swaggerUIContainer").hide();
+        $("#clearButton").hide();
+        $("#customRenderer").show();
+        $("#rendererInput").val("");
+    }
+
+    function showUiFrame() {
+        $("#swaggerUIContainer").show();
+        $("#clearButton").show();
+        $("#customRenderer").hide();
+    }
+</script>
+</body>
+</html>
