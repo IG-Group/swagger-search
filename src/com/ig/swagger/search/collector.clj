@@ -120,9 +120,9 @@
                                parser/index-data-for-v2)
                    (partial find-swagger-ui http-client)
                    attach-ui)]
-    (map (comp pipeline
-               #(assoc pipeline-config :service-url %))
-         services)))
+    (pmap (comp pipeline
+                #(assoc pipeline-config :service-url %))
+          services)))
 
 (defn glue [json-client http-client pipeline-config services]
   (let [swagger-data (collect-swagger-data json-client http-client pipeline-config services)]
