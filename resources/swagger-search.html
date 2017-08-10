@@ -55,12 +55,12 @@
                                     </div>
                                     {% if swagger-services|not-empty %}
                                     <ul class="list" style="list-style-type:none">
-                                        {% for service in swagger-services|sort-by:official-name %}
+                                        {% for service in swagger-services|sort-by:service-name %}
                                         <li>
                                             <button type="button" class="list-group-item swaggerApiTrigger name"
                                                     style="margin: 3px 0px;"
                                                     onClick="pointToSwaggerApiWithBackupRenderer('{{service.ui-base-path}}')">
-                                                {{service.official-name}}
+                                                {{service.service-name}}
                                                 <span class="badge">Swagger {{service.swagger-version}}</span>
                                             </button>
                                         </li>

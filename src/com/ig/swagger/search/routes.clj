@@ -21,14 +21,6 @@
         forward-slash (str/replace alpha-numeric "[^a-zA-Z 0-9]" "")]
     forward-slash))
 
-(defn format-service-name [service-name]
-  (str/capitalize (str/replace service-name "/" "")))
-
-(defn get-filtered-services [index]
-  (filter (fn [service]
-            (not-empty (:servlet-context service)))
-          (index/get-swagger-services index)))
-
 (defn get-query-result [index query]
   (when query
     (merge {:query query}
@@ -38,12 +30,6 @@
                {:error "Invalid query submitted"})
              (catch IndexNotFoundException _
                {:error "Index is not available"})))))
-
-(defn get-swagger-services [index]
-  (map (fn [service]
-         (assoc service
-           :official-name (format-service-name (:servlet-context service))))
-       (get-filtered-services index)))
 
 (def http-api
   (routes
@@ -62,7 +48,7 @@
         :query-params [{query :- String nil}]
         (ok (render-file "swagger-search.html" (assoc (get-query-result index query)
                                                  :servlet-context context
-                                                 :swagger-services (get-swagger-services index)))))
+                                                 :swagger-services (index/get-swagger-services index)))))
 
       (GET "/render" {context :servlet-context-path}
         :no-doc true

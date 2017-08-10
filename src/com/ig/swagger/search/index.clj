@@ -5,19 +5,20 @@
             medley.core
             [schema.core :as s]))
 
-(def ^{:private true} keys
-  [:method :path :basePath :swagger-version :servlet-context :ui-api-path :ui-base-path :spec-path :summary])
+(def ^{:private true} lucene-keys
+  [:method :path :basePath :swagger-version :servlet-context :ui-api-path :ui-base-path :spec-path :summary
+   :service-name])
 
 (defn with-val [ks v]
   (zipmap ks (repeat v)))
 
 (defn- empty-index []
   (clucy.core/memory-index
-    (assoc (with-val keys {:type "string"})
+    (assoc (with-val lucene-keys {:type "string"})
       :_id [:id {:type "string"}])))
 
 (defn- details [endpoints]
-  (set (map #(select-keys % [:swagger-version :servlet-context :ui-base-path :spec-path]) endpoints)))
+  (set (map #(select-keys % [:swagger-version :servlet-context :ui-base-path :spec-path :service-name :service-version]) endpoints)))
 
 (defn- build-index [endpoints]
   (let [index (empty-index)]

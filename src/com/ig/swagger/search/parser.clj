@@ -2,7 +2,8 @@
   (:use [clojure.tools.logging :only [error info]])
   (:require [clojure.set]
             [ring.util.codec :as codec]
-            [clojure.string :as string]))
+            [clojure.string :as string]
+            [clojure.string :as str]))
 
 (defn encode-ui-path
   [path operation-id]
@@ -14,6 +15,9 @@
        (-> operation-id
            (string/replace #"[/-]" "_")
            (string/replace #"[\{\}]" ""))))
+
+(defn base-path-to-service-name [path]
+  (str/capitalize (str/replace path "/" "")))
 
 ;;;
 ;;; V2 parsing
@@ -41,10 +45,13 @@
   (mapcat get-controller-methods swagger-paths))
 
 (defn index-data-for-v2 [{:keys [swagger-doc]}]
-  (let [{:keys [basePath paths swagger]} swagger-doc
+  (let [{:keys [paths swagger]} swagger-doc
         more-index-data (fn [controller-path]
                           (assoc controller-path
-                            :servlet-context basePath       ;; Why not use the title instead of the servlet-context?
+                            :servlet-context (:basePath swagger-doc)
+                            :service-name (or (-> swagger-doc :info :title)
+                                              (base-path-to-service-name (:basePath swagger-doc)))
+                            :service-version (-> swagger-doc :info :version)
                             :swagger-version swagger))]
     {:index-data (map more-index-data (get-controller-paths paths))}))
 
@@ -57,6 +64,7 @@
                               (assoc (select-keys operation [:method :summary])
                                 :path (:path controller-api)
                                 :servlet-context basePath
+                                :service-name (base-path-to-service-name basePath) ;; TODO: find if v1 has a service name
                                 :swagger-version swaggerVersion
                                 :ui-api-path (encode-ui-path resourcePath ;; this does not really work. we need a better solution (something in the UI?) to get the operation expanded
                                                              (:nickname operation (:description controller-api)))))]
