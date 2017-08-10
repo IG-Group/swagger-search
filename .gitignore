@@ -4,4 +4,6 @@ target
 war/logs
 logs
 .lein-failures
+.lein-repl-history
+pom.xml*
 swagger.config.edn
