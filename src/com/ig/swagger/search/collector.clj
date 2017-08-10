@@ -16,6 +16,8 @@
    :index-data                  [{:path            "/search"
                                   :spec-path       "http://ip1/a-tomcat-service/api-docs" ;; swagger-doc-url
                                   :swagger-version "1.2"
+                                  :service-name    "SwaggerSearch"
+                                  :service-version "0.0.1"
                                   :summary         "Search for API"
                                   :method          "GET"
                                   :ui-api-path     "http://ip1/a-tomcat-service/swagger/index.html#!/abc/operationSearch"
@@ -142,6 +144,7 @@
     {:json-client       json-client
      :http-client       http-client
      :initial-load-task (future (run-indexing))
+     :index-fn          run-indexing
      :scheduled-task    (schedule/schedule                  ;; TODO: make schedule configurable
                           {:minute (range 0 60 5)} run-indexing)}))
 
