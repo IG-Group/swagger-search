@@ -87,8 +87,8 @@
     {:index-data (map (fn [data]
                         (assoc data
                           :spec-path swagger-doc-url
-                          :ui-base-path (str "render?url=" swagger-doc-url "#!") ;; TODO: move all this logic to FE??
-                          :ui-api-path (str "render?url=" swagger-doc-url "#!" (:ui-api-path data))))
+                          :ui-base-path (str "render?swagger-proxy-url=" swagger-doc-url "#!") ;; TODO: move all this logic to FE??
+                          :ui-api-path (str "render?swagger-proxy-url=" swagger-doc-url "#!" (:ui-api-path data))))
                       index-data)}))
 
 ;;;

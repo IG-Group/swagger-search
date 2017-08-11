@@ -61,6 +61,7 @@
                                                     style="margin: 3px 0px;"
                                                     onClick="pointToSwaggerApiWithBackupRenderer('{{service.ui-base-path}}')">
                                                 {{service.service-name}}
+                                                <span class="badge">v {{service.service-version}}</span>
                                                 <span class="badge">Swagger {{service.swagger-version}}</span>
                                             </button>
                                         </li>
@@ -181,7 +182,7 @@
         if (!specPath.startsWith("https://") && !specPath.startsWith("http://")) {
             specPath = "http://" + specPath;
         }
-        var url = "{{servlet-context}}/render?url=" + specPath;
+        var url = "{{servlet-context}}/render?swagger-proxy-url=" + specPath;
         $("#swaggerApiFrame").attr('src', url);
         showUiFrame();
     }

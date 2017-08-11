@@ -52,9 +52,9 @@
 
       (GET "/render" {context :servlet-context-path}
         :no-doc true
-        :query-params [url :- String]
-        (ok (render-file "swagger-ui.html" {:spec-url     url
-                                            :proxy-prefix (str context "/api/proxy?url=")})))
+        :query-params [swagger-proxy-url :- String]
+        (ok (render-file "swagger-ui.html" {:spec-url     swagger-proxy-url
+                                            :proxy-prefix (str context "/api/proxy")})))
 
       (GET "/api/search" {index :index}
         :tags ["API search"]
@@ -75,8 +75,8 @@
 
       (ANY "/api/proxy" {client :proxy-client :as request}
         :no-doc true
-        :query-params [url :- String]
-        (select-keys (proxy/handle-proxy-request client request url) [:status :body :headers])))
+        :header-params [x-swagger-proxy-url :- String]
+        (select-keys (proxy/handle-proxy-request client request x-swagger-proxy-url) [:status :body :headers])))
     (route/resources "/")
     (route/not-found "<h1>Page not found</h1>")))
 

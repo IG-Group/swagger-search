@@ -8,7 +8,7 @@
 (defn- build-request [{:keys [request-method headers body]} endpoint]
   (let [proxy-request {:url     endpoint
                        :method  request-method
-                       :headers (select-keys headers ["accept" "content-type" "content-length"])}]
+                       :headers (dissoc headers ["host" "connection"])}]
     (if (#{:get :head} request-method)
       proxy-request
       (assoc proxy-request

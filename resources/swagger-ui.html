@@ -45,7 +45,8 @@
       window.swaggerUi = new SwaggerUi({
         url: specUrl,
         requestInterceptor: function() { // send requests through swagger search proxy
-          this.url = proxyUrl + this.url;
+          this["headers"]["X-SWAGGER-PROXY-URL"] = this.url;
+          this.url = proxyUrl;
           return this;
         },
         dom_id: "swagger-ui-container",
