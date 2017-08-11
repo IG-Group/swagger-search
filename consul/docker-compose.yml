@@ -5,14 +5,14 @@ services:
    ports:
     - "8500:8500"
  api-sample-1:
-    build: api-example-1
+    build: ../api-example-1
     ports:
      - "8501:3000"
     environment:
      - SERVICE_TAGS=master,backups
      - SERVICE_NAME=api1-example
  api-sample-2:
-    build: api-example-1
+    build: ../api-example-1
     ports:
      - "8502:3000"
     environment:
