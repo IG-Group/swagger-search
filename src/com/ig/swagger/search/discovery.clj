@@ -3,7 +3,7 @@
 (defn resolve-and-create [config f-name]
   (try
     (require (symbol (namespace f-name)))
-    (catch Exception e (throw (RuntimeException. e (str "Could not load namespace " (namespace f-name))))))
+    (catch Exception e (throw (RuntimeException. (str "Could not load namespace " (namespace f-name)) e))))
   (if-let [f (resolve f-name)]
     (f config)
     (throw (RuntimeException. (str "Could not find function " f-name)))))

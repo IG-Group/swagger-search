@@ -33,6 +33,7 @@
                                       :host    "0.0.0.0"
                                       :port    8503}}
              :consul  {:dependencies [[consul-clojure "0.7.1"]]}
+             :etcd    {:dependencies [[etcd-clojure "0.2.4"]]}
              :uberjar {:dependencies [[ring/ring-jetty-adapter "1.5.0"]]
                        :aot          :all
                        :omit-source  true
