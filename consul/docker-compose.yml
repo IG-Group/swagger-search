@@ -1,0 +1,39 @@
+version: "3"
+services:
+ consul:
+   image: consul:0.9.0
+   ports:
+    - "8500:8500"
+ api-sample-1:
+    build: api-example-1
+    ports:
+     - "8501:3000"
+    environment:
+     - SERVICE_TAGS=master,backups
+     - SERVICE_NAME=api1-example
+ api-sample-2:
+    build: api-example-1
+    ports:
+     - "8502:3000"
+    environment:
+     - SERVICE_TAGS=master,backups
+     - SERVICE_NAME=api1-example
+ swagger-search:
+    build: swagger-search
+    ports:
+     - "8503:8503"
+     - "8504:3000"
+    volumes:
+     - ../:/app
+     - ./swagger-search:/swagger-config
+     - ~/.m2:/root/.m2
+     - ~/.lein:/root/.lein
+    environment:
+     - SWAGGER_CONF=/swagger-config/consul.swagger.config.edn
+ registrator:
+  command: -internal=true consul://consul:8500
+  image: gliderlabs/registrator:v7
+  links:
+    - consul
+  volumes:
+    - /var/run/docker.sock:/tmp/docker.sock

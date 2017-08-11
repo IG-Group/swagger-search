@@ -23,7 +23,17 @@
                  ;[org.slf4j/jcl-over-slf4j nil]
                  [org.tcrawley/dynapath "0.2.4"]]
   :profiles {:dev     {:dependencies [[ring/ring-mock "0.3.0"]
-                                      [midje "1.8.3"]]}
+                                      [midje "1.8.3"]
+                                      [ring/ring-jetty-adapter "1.5.0"]]
+                       :source-paths ["dev"]
+                       :repl-options {:init-ns dev
+                                      :init    (do
+                                                 (println "Starting ...")
+                                                 (go))
+                                      :host    "0.0.0.0"
+                                      :port    8503}}
+             :consul  {:dependencies [[consul-clojure "0.7.1"]]}
              :uberjar {:dependencies [[ring/ring-jetty-adapter "1.5.0"]]
-                       :aot :all
-                       :omit-source true}})
+                       :aot          :all
+                       :omit-source  true
+                       :main         com.ig.swagger.search.standalone}})

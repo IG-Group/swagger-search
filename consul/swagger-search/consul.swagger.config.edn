@@ -1,0 +1,14 @@
+{:proxy-client        {:connection-timeout 10000
+                       :request-timeout    10000
+                       :max-connections    2000}
+ :collector           {:http-config                 {:connection-timeout 10000
+                                                     :request-timeout    10000
+                                                     :max-connections    2000}
+                       :possible-swagger-ui-suffix  ["/swagger/ui/index.html" "/swagger-ui.html" "/swagger/index.html" "/swagger/ui/swagger-ui.html"]
+                       :possible-swagger-doc-suffix ["/swagger.json" "/v2/api-docs/" "/swagger/swagger.json" "/api-docs"]}
+
+ :discovery-providers [com.ig.swagger.search.discovery.providers.consul/create-consul]
+
+ :consul              {:host "consul"
+                       :port 8500}
+ }

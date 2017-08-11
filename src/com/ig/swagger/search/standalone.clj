@@ -9,14 +9,14 @@
 
 (defonce the-system (atom nil))
 
-(defn start [{join? :join?} config]
+(defn start [system-atom config]
   (let [system (search/system-start config)]
-    (reset! the-system (assoc system
-                         :jetty (jetty/run-jetty (:routes system) {:port  3000
-                                                                   :join? join?})))))
+    (reset! system-atom (assoc system
+                          :jetty (jetty/run-jetty (:routes system) {:port  3000
+                                                                    :join? false})))))
 
-(defn stop []
-  (when-let [system @the-system]
+(defn stop [system-atom]
+  (when-let [system @system-atom]
     (.stop (:jetty system))
     (search/system-stop system)))
 
@@ -31,6 +31,17 @@
                 (.endsWith (.getName file) "jar"))
         (add-to-classpath file)))))
 
+(defn find-config-file []
+  (or
+    (some->
+      (or (System/getenv "SWAGGER_CONF")
+          (System/getProperty "SWAGGER_CONF")
+          (io/resource "swagger.config.edn"))
+      io/file
+      slurp
+      edn/read-string)
+    (throw (RuntimeException. "No swagger.config.edn file at $SWAGGER_HOME or SWAGGER_CONF not specified"))))
+
 (defn -main [& args]
   (let [home-dir (or
                    (cond-> (or (System/getenv "SWAGGER_HOME") (System/getProperty "SWAGGER_HOME") (first args))
@@ -39,18 +50,9 @@
                    (throw (RuntimeException. "No SWAGGER_HOME environment set. Please see documentation")))
         _ (add-to-classpath home-dir)
 
-        config (or
-                 (some-> (io/resource "swagger.config.edn")
-                         io/file
-                         slurp
-                         edn/read-string)
-                 (throw (RuntimeException. "No swagger.config.edn file at $SWAGGER_HOME")))]
+        config (find-config-file)]
     (add-libs-to-classpath home-dir)
-    (start {:join? true} config)))
-
-(comment
-  (start {:join? false}
-         {;read from file?
-          })
-  (stop)
-  )
+    (start the-system config)
+    (let [value (Object.)]
+      (locking value
+        (.await value)))))
