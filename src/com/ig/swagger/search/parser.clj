@@ -17,7 +17,8 @@
            (string/replace #"[\{\}]" ""))))
 
 (defn base-path-to-service-name [path]
-  (str/capitalize (str/replace path "/" "")))
+  (when path
+    (str/capitalize (str/replace path "/" ""))))
 
 ;;;
 ;;; V2 parsing
