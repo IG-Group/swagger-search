@@ -24,15 +24,18 @@
                  :swagger-version "2.0"
                  :summary         "ping pong"
                  :method          "GET"
+                 :service-version nil
+                 :service-name    "A-tomcat-service"
                  :servlet-context "/a-tomcat-service"}
                 {:ui-api-path     "/controller/operationId"
                  :path            "/search"
                  :swagger-version "2.0"
                  :summary         "Search for API"
                  :method          "GET"
+                 :service-version nil
+                 :service-name    "A-tomcat-service"
                  :servlet-context "/a-tomcat-service"}]
                :in-any-order)))
-
 
 (deftest parse-swagger-response-v2-api-path
   (facts "parsing the swagger v2 response without operationId to make sure the api-path is still correct"
@@ -42,12 +45,16 @@
                  :swagger-version "2.0"
                  :summary         "ping pong"
                  :method          "GET"
+                 :service-version nil
+                 :service-name    "A-tomcat-service"
                  :servlet-context "/a-tomcat-service"}
                 {:ui-api-path     "/controller/GET_search"
                  :path            "/search"
                  :swagger-version "2.0"
                  :summary         "Search for API"
                  :method          "GET"
+                 :service-version nil
+                 :service-name    "A-tomcat-service"
                  :servlet-context "/a-tomcat-service"}]
                :in-any-order)))
 
@@ -56,6 +63,8 @@
          (parse-v2 "parser_v2_minimum_fields.json") =>
          (just [{:path            "/ping/abc"
                  :method          "GET"
+                 :service-name    nil,
+                 :service-version nil,
                  :swagger-version "2.0"
                  :servlet-context nil
                  :summary         nil
@@ -70,13 +79,13 @@
                  :summary         "ping pong"
                  :method          "GET"
                  :ui-api-path     "/somebasepath/operationPing"
+                 :service-name    "A-tomcat-service",
                  :servlet-context "/a-tomcat-service"}
                 {:path            "/search"
                  :swagger-version "1.2"
                  :summary         "Search for API"
                  :method          "GET"
                  :ui-api-path     "/somebasepath/operationSearch"
+                 :service-name    "A-tomcat-service",
                  :servlet-context "/a-tomcat-service"}]
                :in-any-order)))
-
-
