@@ -35,6 +35,7 @@
     ;; TODO: add description
     {:method      (name method)
      :summary     (:summary operation)
+     :parameters  (map #(select-keys % [:name :description]) (:parameters operation))
      :ui-api-path api-path}))
 
 (defn get-controller-methods [[path path-item]]

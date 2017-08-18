@@ -14,6 +14,7 @@
                          :servlet-context {:indexed false}
                          :ui-api-path     {:indexed false}
                          :ui-base-path    {:indexed false}
+                         :parameters      {:stored false}
                          :summary         {}
                          :service-name    {}
                          :all-content     {:stored false}}))
@@ -46,9 +47,15 @@
   [m]
   (assoc m :all-content (concat-values (with-meta m lucene-keys))))
 
+(defn- flattern-params [m]
+  (update m :parameters
+          (fn [params]
+            (apply str (interpose " " (mapcat vals params))))))
+
 (defn build-index [endpoints]
   (let [index (empty-index)]
     (some->> endpoints
+             (map flattern-params)
              (map with-all-content)
              (apply clucy.core/add index))
     index))
