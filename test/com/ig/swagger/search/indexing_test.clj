@@ -41,6 +41,16 @@
                  =>
                  (contains [(contains {:path "/pizza" :method "post"})]))
 
+           (fact "property within array"
+                 (index/search* index "propertyInsideObjectInsideArray" 10)
+                 =>
+                 (contains [(contains {:path "/anonymous" :method "put"})]))
+
+           (fact "property within an object within an object"
+                 (index/search* index "innerInnerField" 10)
+                 =>
+                 (just [(contains {:path "/pizzas" :method "post"})]))
+
            ))
   )
 
@@ -49,5 +59,5 @@
   (->>
     (index/search*
       (parse-and-index "v2_big_example.json")
-      "parameters:toppings" 10)
+      "NewPizza" 10)
     ))

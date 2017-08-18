@@ -33,15 +33,22 @@
   (let [path (map keyword (rest (string/split ref #"/")))]
     (get-in *swagger-doc* path)))
 
+(defn fields [schema]
+  (let [schema (if (:$ref schema)
+                 (find-ref (:$ref schema))
+                 schema)]
+    (cond
+      (= "object" (:type schema)) (vec (concat (keys (:properties schema))
+                                               (mapcat fields (vals (:properties schema)))))
+      (= "array" (:type schema)) (fields (:items schema))
+      :default nil)))
+
 (defn- param-data [param]
   (let [schema (:schema param)]
     (assoc
       (select-keys param [:name :description])
       :field-names
-      (cond
-        (= "object" (:type schema)) (keys (:properties schema))
-        (:$ref schema) (keys (:properties (find-ref (:$ref schema))))
-        :default nil))))
+      (fields schema))))
 
 (defn get-controller-data
   [path [method operation]]

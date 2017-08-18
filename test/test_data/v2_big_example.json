@@ -460,6 +460,9 @@
       "properties": {
         "secret": {
           "type": "boolean"
+        },
+        "propertyInsideObjectInsideArray": {
+          "type": "boolean"
         }
       },
       "additionalProperties": {},
@@ -479,6 +482,20 @@
         },
         "hot": {
           "type": "boolean"
+        },
+        "retotal": {
+          "type": "object",
+          "properties": {
+            "innerField": {
+              "type": "object",
+              "properties": {
+                "innerInnerField": {
+                  "type": "number",
+                  "format": "int64"
+                }
+              }
+            }
+          }
         },
         "description": {
           "type": "string"
