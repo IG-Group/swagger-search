@@ -90,8 +90,9 @@
                                     <button type="button" class="list-group-item swaggerApiTrigger"
                                             onClick="pointToSwaggerApiWithBackupRenderer('{{result.ui-api-path}}')">
 
-                                        {{result.method}} {{result.servlet-context}}{{result.path}} <span
-                                            class="badge">Swagger {{result.swagger-version}}</span>
+                                        {{result.method}} {{result.servlet-context}}{{result.path}}
+                                        <span class="badge">{{result.service-name}}</span>
+                                        <span class="badge">Swagger {{result.swagger-version}}</span>
                                     </button>
 
                                     {% endfor %}
@@ -206,9 +207,12 @@
                 return (a < b) ? -1 : (a > b) ? 1 : 0;
             });
             $.each(results, function (i, result) {
+                if (result["servlet-context"] === "/") {
+                    result["servlet-context"] = "";
+                }
                 $("<button type=\"button\" class=\"list-group-item swaggerApiTrigger\" onClick=\"pointToSwaggerApiWithBackupRenderer('" +
                         result["ui-api-path"] + "')\">" + result.method + " " + result["servlet-context"] + result.path + "" +
-                        "<span class=\"badge\">Swagger " + result["swagger-version"] + "</span></button>")
+                        "<span class=\"badge\">" + result["service-name"] + "</span></button>")
                         .appendTo($('#queryResults'));
             });
         } else {
