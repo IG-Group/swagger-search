@@ -1,0 +1,613 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Sample Api",
+    "version": "0.0.1",
+    "description": "Compojure Api sample application"
+  },
+  "produces": [
+    "application/json",
+    "application/x-yaml",
+    "application/edn",
+    "application/transit+json",
+    "application/transit+msgpack"
+  ],
+  "consumes": [
+    "application/json",
+    "application/x-yaml",
+    "application/edn",
+    "application/transit+json",
+    "application/transit+msgpack"
+  ],
+  "basePath": "/",
+  "paths": {
+    ":/pizzas/{id}": {
+      "get": {
+        "tags": [
+          "pizza"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Pizza"
+            },
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "summary": "Gets a pizza"
+      },
+      "delete": {
+        "tags": [
+          "pizza"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "summary": "Deletes a Pizza",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "echo/hello": {
+      "get": {
+        "tags": [
+          "echo"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "description": "",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "echo/anonymous": {
+      "put": {
+        "tags": [
+          "echo"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Response13072"
+              }
+            },
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Body13070",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Body13070"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "pizzas": {
+      "get": {
+        "tags": [
+          "pizza"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Pizza"
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Gets all Pizzas"
+      },
+      "post": {
+        "tags": [
+          "pizza"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Pizza"
+            },
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "NewPizza",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewPizza"
+            }
+          }
+        ],
+        "summary": "Adds a pizza"
+      },
+      "put": {
+        "tags": [
+          "pizza"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Pizza"
+            },
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Pizza",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Pizza"
+            }
+          }
+        ],
+        "summary": "Updates a pizza"
+      }
+    },
+    "echo/request": {
+      "get": {
+        "tags": [
+          "echo"
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "math/minus": {
+      "post": {
+        "tags": [
+          "math"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Total"
+            },
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Body13069",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Body13069"
+            }
+          }
+        ],
+        "summary": "x-y with body-parameters"
+      }
+    },
+    ":/math/power": {
+      "get": {
+        "tags": [
+          "math"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Total"
+            },
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x",
+            "description": "",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "header",
+            "name": "y",
+            "description": "",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "summary": "x^y with header-parameters"
+      }
+    },
+    "echo/pizza": {
+      "get": {
+        "tags": [
+          "echo"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/NewSingleToppingPizza"
+            },
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "price",
+            "description": "",
+            "required": true,
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "in": "query",
+            "name": "hot",
+            "description": "",
+            "required": true,
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "description",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "toppings",
+            "description": "",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "olives",
+              "pepperoni",
+              "ham",
+              "cheese",
+              "habanero"
+            ]
+          }
+        ],
+        "summary": "get echo of a pizza"
+      },
+      "post": {
+        "tags": [
+          "echo"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/NewSingleToppingPizza"
+            },
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "NewSingleToppingPizza",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewSingleToppingPizza"
+            }
+          }
+        ],
+        "summary": "post echo of a pizza"
+      }
+    },
+    "math/plus": {
+      "get": {
+        "tags": [
+          "math"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Total"
+            },
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "x",
+            "description": "",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "query",
+            "name": "y",
+            "description": "",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "summary": "x+y with query-parameters"
+      }
+    },
+    ":/math/times/{x}/{y}": {
+      "get": {
+        "tags": [
+          "math"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Total"
+            },
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "x",
+            "description": "",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "path",
+            "name": "y",
+            "description": "",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "summary": "x*y with path-parameters"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "math",
+      "description": "math with parameters"
+    },
+    {
+      "name": "echo",
+      "description": "request echoes"
+    },
+    {
+      "name": "pizza",
+      "description": "pizza Api it is."
+    }
+  ],
+  "definitions": {
+    "Body13069": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "y": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "x",
+        "y"
+      ]
+    },
+    "Body13070": {
+      "type": "object",
+      "properties": {
+        "secret": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": {},
+      "required": [
+        "secret"
+      ]
+    },
+    "NewPizza": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "double"
+        },
+        "hot": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "toppings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "olives",
+              "pepperoni",
+              "ham",
+              "cheese",
+              "habanero"
+            ]
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "price",
+        "hot",
+        "toppings"
+      ]
+    },
+    "NewSingleToppingPizza": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "double"
+        },
+        "hot": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "toppings": {
+          "type": "string",
+          "enum": [
+            "olives",
+            "pepperoni",
+            "ham",
+            "cheese",
+            "habanero"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "price",
+        "hot",
+        "toppings"
+      ]
+    },
+    "Pizza": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "double"
+        },
+        "hot": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "toppings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "olives",
+              "pepperoni",
+              "ham",
+              "cheese",
+              "habanero"
+            ]
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "price",
+        "hot",
+        "toppings"
+      ]
+    },
+    "Response13072": {
+      "type": "object",
+      "properties": {
+        "secret": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": {},
+      "required": [
+        "secret"
+      ]
+    },
+    "Total": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "total"
+      ]
+    }
+  }
+}

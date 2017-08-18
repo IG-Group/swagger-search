@@ -89,3 +89,5 @@
                  :service-name    "A-tomcat-service",
                  :servlet-context "/a-tomcat-service"}]
                :in-any-order)))
+
+(parse-v2 "v2_big_example.json")
