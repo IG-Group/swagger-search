@@ -27,7 +27,19 @@
 
            (index/search* index "NewSingleToppingPizza" 10)
            =>
-           (just [(contains {:path "/pizza" :method "post"})])
+           (just [(contains {:path "/pizza" :method "post"})]))
+
+    (facts "can search on the property names of the params"
+
+           (fact "inlined object definition"
+                 (index/search* index "propertyInsideParamDef" 10)
+                 =>
+                 (just [(contains {:path "/minus" :method "post"})]))
+
+           (fact "reference"
+                 (index/search* index "toppings" 10)
+                 =>
+                 (contains [(contains {:path "/pizza" :method "post"})]))
 
            ))
   )
@@ -37,5 +49,5 @@
   (->>
     (index/search*
       (parse-and-index "v2_big_example.json")
-      "NewSingleToppingPizza" 10)
+      "parameters:toppings" 10)
     ))

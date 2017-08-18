@@ -225,7 +225,26 @@
             "description": "",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Body13069"
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "propertyInsideParamDef": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "y": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "x",
+                "y"
+              ]
             }
           }
         ],
@@ -436,24 +455,6 @@
     }
   ],
   "definitions": {
-    "Body13069": {
-      "type": "object",
-      "properties": {
-        "x": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "y": {
-          "type": "integer",
-          "format": "int64"
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "x",
-        "y"
-      ]
-    },
     "Body13070": {
       "type": "object",
       "properties": {

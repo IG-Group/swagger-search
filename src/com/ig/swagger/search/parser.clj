@@ -27,35 +27,51 @@
 (defn stringify [key]
   (if key (name key)))
 
+(def ^:dynamic *swagger-doc* nil)
+
+(defn- find-ref [ref]
+  (let [path (map keyword (rest (string/split ref #"/")))]
+    (get-in *swagger-doc* path)))
+
+(defn- param-data [param]
+  (let [schema (:schema param)]
+    (assoc
+      (select-keys param [:name :description])
+      :field-names
+      (cond
+        (= "object" (:type schema)) (keys (:properties schema))
+        (:$ref schema) (keys (:properties (find-ref (:$ref schema))))
+        :default nil))))
+
 (defn get-controller-data
   [path [method operation]]
   (let [api-path (encode-ui-path (first (:tags operation ["default"]))
                                  (or (:operationId operation)
                                      (str (name method) "_" (name path))))]
-    ;; TODO: add description
     {:method      (name method)
      :summary     (:summary operation)
-     :parameters  (map #(select-keys % [:name :description]) (:parameters operation))
+     :parameters  (mapv param-data (:parameters operation))
      :ui-api-path api-path}))
 
 (defn get-controller-methods [[path path-item]]
-  (map (comp
-         (fn [index-data] (assoc index-data :path (str "/" (stringify path))))
-         (partial get-controller-data path)) path-item))
+  (mapv (comp
+          (fn [index-data] (assoc index-data :path (str "/" (stringify path))))
+          (partial get-controller-data path)) path-item))
 
 (defn get-controller-paths [swagger-paths]
-  (mapcat get-controller-methods swagger-paths))
+  (vec (mapcat get-controller-methods swagger-paths)))
 
 (defn index-data-for-v2 [{:keys [swagger-doc]}]
-  (let [{:keys [paths swagger]} swagger-doc
-        more-index-data (fn [controller-path]
-                          (assoc controller-path
-                            :servlet-context (:basePath swagger-doc)
-                            :service-name (or (-> swagger-doc :info :title)
-                                              (base-path-to-service-name (:basePath swagger-doc)))
-                            :service-version (-> swagger-doc :info :version)
-                            :swagger-version swagger))]
-    {:index-data (map more-index-data (get-controller-paths paths))}))
+  (binding [*swagger-doc* swagger-doc]
+    (let [{:keys [paths swagger]} swagger-doc
+          more-index-data (fn [controller-path]
+                            (assoc controller-path
+                              :servlet-context (:basePath swagger-doc)
+                              :service-name (or (-> swagger-doc :info :title)
+                                                (base-path-to-service-name (:basePath swagger-doc)))
+                              :service-version (-> swagger-doc :info :version)
+                              :swagger-version swagger))]
+      {:index-data (mapv more-index-data (get-controller-paths paths))})))
 
 ;;;
 ;;; V1
