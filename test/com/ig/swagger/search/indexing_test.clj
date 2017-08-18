@@ -49,9 +49,18 @@
            (fact "property within an object within an object"
                  (index/search* index "innerInnerField" 10)
                  =>
-                 (just [(contains {:path "/pizzas" :method "post"})]))
+                 (just [(contains {:path "/pizzas" :method "post"})])))
 
-           ))
+    (facts "can search on the responses"
+
+           (index/search* index "total" 10)
+           =>
+           (contains [(contains {:path "/minus" :method "post"})])
+
+           (index/search* index "responses:total" 10)
+           =>
+           (contains [(contains {:path "/minus" :method "post"})]))
+    )
   )
 
 (comment
@@ -59,5 +68,5 @@
   (->>
     (index/search*
       (parse-and-index "v2_big_example.json")
-      "NewPizza" 10)
+      "total" 10)
     ))

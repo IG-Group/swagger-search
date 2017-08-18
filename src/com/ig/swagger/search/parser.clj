@@ -58,6 +58,7 @@
     {:method      (name method)
      :summary     (:summary operation)
      :parameters  (mapv param-data (:parameters operation))
+     :responses   (mapv param-data (vals (:responses operation)))
      :ui-api-path api-path}))
 
 (defn get-controller-methods [[path path-item]]
