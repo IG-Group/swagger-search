@@ -4,12 +4,7 @@
     [com.ig.swagger.search.standalone :as standalone]
     clojure.java.shell))
 
-(disable-reload!)
-
-(if-let [ns (find-ns 'com.ig.swagger.search.discovery.providers.consul)]
-  (disable-reload! ns))
-
-(def system (atom nil))
+(defonce system (atom nil))
 
 (defn start
   "Starts the current development system."
