@@ -63,10 +63,30 @@
     )
   )
 
+(let [index (parse-and-index "youtube.json")]
+  (def index index)
+  (deftest youtube []
+    (facts "path item parameters object"
+           (index/search* index "method:parameters" 10) => []
+
+           (index/search* index "prettyPrint" 10) =not=> []
+
+           (index/search* index "fan funding events" 10) =not=> []
+
+           )))
+
 (comment
+
+  (youtube)
+  (index-and-search)
+  (->>
+    (index/search*
+      (parse-and-index "youtube.json")
+      "fan funding events" 10)
+    )
 
   (->>
     (index/search*
       (parse-and-index "v2_big_example.json")
-      "total" 10)
+      "innerInnerField" 10)
     ))
