@@ -27,7 +27,8 @@
 
            (index/search* index "NewSingleToppingPizza" 10)
            =>
-           (just [(contains {:path "/pizza" :method "post"})]))
+           (just [(contains {:path "/pizza" :method "post"})
+                  (contains {:path "/pizza" :method "get"})]))
 
     (facts "can search on the property names of the params"
 
@@ -66,6 +67,10 @@
 (let [index (parse-and-index "youtube.json")]
   (def index index)
   (deftest youtube []
+    (facts "can search types"
+           (index/search* index "types:FanFundingEventSnippet" 10) =not=> []
+           (index/search* index "FanFundingEventSnippet" 10) =not=> [])
+
     (facts "path item parameters object"
            (index/search* index "method:parameters" 10) => []
 
@@ -89,7 +94,7 @@
 
   (index/search*
     (parse-and-index "youtube.json")
-    "fan funding event" 10)
+    "method:put The part parameter specifies a comma-separated list of commentThread resource properties that " 10)
 
   (->>
     (index/search*

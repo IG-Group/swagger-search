@@ -1,9 +1,9 @@
 (ns com.ig.swagger.search.index
   (:refer-clojure :exclude [replace])
   (:require [clucy.core :as clucy]
+            clojure.string
             cheshire.generate
-            medley.core
-            [schema.core :as s])
+            medley.core)
   (:import org.apache.lucene.analysis.en.EnglishAnalyzer))
 
 (def ^{:private true} lucene-keys
@@ -18,6 +18,7 @@
                          :parameters              {:stored false}
                          :responses               {:stored false}
                          :summary-and-description {:stored false}
+                         :types                   {:stored false}
                          :service-name            {}
                          :all-content             {:stored false}}))
 
@@ -53,7 +54,10 @@
   (fn [m]
     (update m k
             (fn [params]
-              (apply str (interpose " " (mapcat vals params)))))))
+              (clojure.string/join " " (mapcat vals params))))))
+
+(defn- types-to-str [m]
+  (update m :types #(clojure.string/join " " %)))
 
 (def analyzer (EnglishAnalyzer. clucy.core/*version*))
 
@@ -63,6 +67,7 @@
       (some->> endpoints
                (map (flattern-field :parameters))
                (map (flattern-field :responses))
+               (map types-to-str)
                (map with-all-content)
                (apply clucy.core/add index))
       index)))

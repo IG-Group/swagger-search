@@ -28,8 +28,11 @@
 (defn stringify [key]
   (if key (name key)))
 
+(defn- ref->keyword-path [ref]
+  (map keyword (rest (string/split ref #"/"))))
+
 (defn- find-ref [swagger-doc ref]
-  (let [path (map keyword (rest (string/split ref #"/")))]
+  (let [path (ref->keyword-path ref)]
     (get-in swagger-doc path)))
 
 (defn fields [schema]
@@ -46,6 +49,20 @@
       :field-names
       (fields schema))))
 
+(defn types-fields [param]
+  (let [schema (:schema param param)
+        type (if (and (:$ref schema)
+                      (= "object" (:type schema)))
+               (stringify (last (ref->keyword-path (:$ref schema)))))]
+    (cons type
+          (cond
+            (= "object" (:type schema)) (vec (mapcat types-fields (vals (:properties schema))))
+            (= "array" (:type schema)) (types-fields (:items schema))
+            :default nil))))
+
+(defn- find-types [param]
+  (types-fields param))
+
 (defn get-controller-data
   [global-params path [method operation]]
   (let [api-path (encode-ui-path (first (:tags operation ["default"]))
@@ -55,6 +72,7 @@
      :summary-and-description (str (:summary operation) (:description operation))
      :parameters              (mapv param-data (concat global-params (:parameters operation)))
      :responses               (mapv param-data (vals (:responses operation)))
+     :types                   (vec (distinct (filter some? (mapcat find-types (concat global-params (:parameters operation) (vals (:responses operation)))))))
      :ui-api-path             api-path}))
 
 (defn get-controller-methods [[path path-item]]
@@ -70,7 +88,9 @@
 (defn resolve-refs [swagger-doc]
   (clojure.walk/prewalk (fn [m]
                           (if (and (map? m) (:$ref m))
-                            (find-ref swagger-doc (:$ref m))
+                            (merge
+                              m
+                              (find-ref swagger-doc (:$ref m)))
                             m)) swagger-doc))
 
 (defn index-data-for-v2 [{:keys [swagger-doc]}]
