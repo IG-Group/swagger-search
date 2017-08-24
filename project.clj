@@ -17,15 +17,14 @@
                  [metosin/ring-swagger-ui "2.1.8-M1"]
                  [selmer "1.0.4"]
                  [schejulure "1.0.1"]
-                 ;[ch.qos.logback/logback-classic nil]
-                 ;[org.slf4j/slf4j-api nil]
-                 ; [org.slf4j/log4j-over-slf4j nil]
-                 ;[org.slf4j/jcl-over-slf4j nil]
                  [consul-clojure "0.7.1"]
                  [etcd-clojure "0.2.4"]
                  [org.tcrawley/dynapath "0.2.4"]]
   :profiles {:dev     {:dependencies [[ring/ring-mock "0.3.0"]
                                       [midje "1.8.3"]
+                                      [ch.qos.logback/logback-classic "1.2.3"]
+                                      [org.slf4j/log4j-over-slf4j "1.7.25"]
+                                      [org.slf4j/jcl-over-slf4j "1.7.25"]
                                       [ring/ring-jetty-adapter "1.5.0"]]
                        :source-paths ["dev"]
                        :repl-options {:init-ns dev
@@ -34,7 +33,10 @@
                                                  (go))
                                       :host    "0.0.0.0"
                                       :port    8503}}
-             :uberjar {:dependencies [[ring/ring-jetty-adapter "1.5.0"]]
+             :uberjar {:dependencies [[ring/ring-jetty-adapter "1.5.0"]
+                                      [ch.qos.logback/logback-classic "1.2.3"]
+                                      [org.slf4j/log4j-over-slf4j "1.7.25"]
+                                      [org.slf4j/jcl-over-slf4j "1.7.25"]]
                        :aot          :all
                        :omit-source  true
                        :main         com.ig.swagger.search.standalone}})
