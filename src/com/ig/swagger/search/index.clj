@@ -7,18 +7,18 @@
 
 (def ^{:private true} lucene-keys
   (medley.core/map-vals #(assoc % :type "string")
-                        {:method          {}
-                         :path            {}
-                         :basePath        {:indexed false}
-                         :swagger-version {:indexed false}
-                         :servlet-context {:indexed false}
-                         :ui-api-path     {:indexed false}
-                         :ui-base-path    {:indexed false}
-                         :parameters      {:stored false}
-                         :responses       {:stored false}
-                         :summary         {}
-                         :service-name    {}
-                         :all-content     {:stored false}}))
+                        {:method                  {}
+                         :path                    {}
+                         :basePath                {:indexed false}
+                         :swagger-version         {:indexed false}
+                         :servlet-context         {:indexed false}
+                         :ui-api-path             {:indexed false}
+                         :ui-base-path            {:indexed false}
+                         :parameters              {:stored false}
+                         :responses               {:stored false}
+                         :summary-and-description {:stored false}
+                         :service-name            {}
+                         :all-content             {:stored false}}))
 
 (defn- empty-index []
   (clucy.core/memory-index

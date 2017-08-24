@@ -13,16 +13,16 @@
    :swagger-ui-url              "http://bip1.test.iggroup.local/bonusmanagement/swagger/index.html"
    :swagger-doc                 {,,,,}
    :v1-api-docs                 {"url" {,,,}}
-   :index-data                  [{:path            "/search"
-                                  :spec-path       "http://ip1/a-tomcat-service/api-docs" ;; swagger-doc-url
-                                  :swagger-version "1.2"
-                                  :service-name    "SwaggerSearch"
-                                  :service-version "0.0.1"
-                                  :summary         "Search for API"
-                                  :method          "GET"
-                                  :ui-api-path     "http://ip1/a-tomcat-service/swagger/index.html#!/abc/operationSearch"
-                                  :ui-base-path    "http://ip1/a-tomcat-service/swagger/index.html#!" ;; swagger-ui-url
-                                  :servlet-context "/a-tomcat-service"}]
+   :index-data                  [{:path                    "/search"
+                                  :spec-path               "http://ip1/a-tomcat-service/api-docs" ;; swagger-doc-url
+                                  :swagger-version         "1.2"
+                                  :service-name            "SwaggerSearch"
+                                  :service-version         "0.0.1"
+                                  :summary-and-description "Search for API"
+                                  :method                  "GET"
+                                  :ui-api-path             "http://ip1/a-tomcat-service/swagger/index.html#!/abc/operationSearch"
+                                  :ui-base-path            "http://ip1/a-tomcat-service/swagger/index.html#!" ;; swagger-ui-url
+                                  :servlet-context         "/a-tomcat-service"}]
    :error                       ["..."]})
 
 ;;;

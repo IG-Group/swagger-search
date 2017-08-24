@@ -51,11 +51,11 @@
   (let [api-path (encode-ui-path (first (:tags operation ["default"]))
                                  (or (:operationId operation)
                                      (str (name method) "_" (name path))))]
-    {:method      (name method)
-     :summary     (str (:summary operation) (:description operation))
-     :parameters  (mapv param-data (concat global-params (:parameters operation)))
-     :responses   (mapv param-data (vals (:responses operation)))
-     :ui-api-path api-path}))
+    {:method                  (name method)
+     :summary-and-description (str (:summary operation) (:description operation))
+     :parameters              (mapv param-data (concat global-params (:parameters operation)))
+     :responses               (mapv param-data (vals (:responses operation)))
+     :ui-api-path             api-path}))
 
 (defn get-controller-methods [[path path-item]]
   (let [path-methods (dissoc path-item :parameters)

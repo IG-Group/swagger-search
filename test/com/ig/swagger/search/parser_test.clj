@@ -19,56 +19,58 @@
 (deftest parse-swagger-response-v2
   (facts "parsing the swagger v2 response produces a result ready for lucene"
          (parse-v2 "parser_v2_working.json") =>
-         (just [{:ui-api-path     "/controller/operationId"
-                 :path            "/ping/abc"
-                 :swagger-version "2.0"
-                 :summary         "ping pong"
-                 :method          "GET"
-                 :service-version nil
-                 :service-name    "A-tomcat-service"
-                 :servlet-context "/a-tomcat-service"}
-                {:ui-api-path     "/controller/operationId"
-                 :path            "/search"
-                 :swagger-version "2.0"
-                 :summary         "Search for API"
-                 :method          "GET"
-                 :service-version nil
-                 :service-name    "A-tomcat-service"
-                 :servlet-context "/a-tomcat-service"}]
+         (just [(contains {:ui-api-path             "/controller/operationId"
+                           :path                    "/ping/abc"
+                           :swagger-version         "2.0"
+                           :summary-and-description "ping pong"
+                           :method                  "GET"
+                           :service-version         nil
+                           :service-name            "A-tomcat-service"
+                           :servlet-context         "/a-tomcat-service"})
+                (contains {:ui-api-path             "/controller/operationId"
+                           :path                    "/search"
+                           :swagger-version         "2.0"
+                           :summary-and-description "Search for API"
+                           :method                  "GET"
+                           :service-version         nil
+                           :service-name            "A-tomcat-service"
+                           :servlet-context         "/a-tomcat-service"})]
                :in-any-order)))
 
 (deftest parse-swagger-response-v2-api-path
   (facts "parsing the swagger v2 response without operationId to make sure the api-path is still correct"
          (parse-v2 "parser_v2_no_operationId.json") =>
-         (just [{:ui-api-path     "/controller/GET_ping_abc"
-                 :path            "/ping/abc"
-                 :swagger-version "2.0"
-                 :summary         "ping pong"
-                 :method          "GET"
-                 :service-version nil
-                 :service-name    "A-tomcat-service"
-                 :servlet-context "/a-tomcat-service"}
-                {:ui-api-path     "/controller/GET_search"
-                 :path            "/search"
-                 :swagger-version "2.0"
-                 :summary         "Search for API"
-                 :method          "GET"
-                 :service-version nil
-                 :service-name    "A-tomcat-service"
-                 :servlet-context "/a-tomcat-service"}]
+         (just [(contains {:ui-api-path             "/controller/GET_ping_abc"
+                           :path                    "/ping/abc"
+                           :swagger-version         "2.0"
+                           :summary-and-description "ping pong"
+                           :method                  "GET"
+                           :service-version         nil
+                           :service-name            "A-tomcat-service"
+                           :servlet-context         "/a-tomcat-service"})
+                (contains {:ui-api-path             "/controller/GET_search"
+                           :path                    "/search"
+                           :swagger-version         "2.0"
+                           :summary-and-description "Search for API"
+                           :method                  "GET"
+                           :service-version         nil
+                           :service-name            "A-tomcat-service"
+                           :servlet-context         "/a-tomcat-service"})]
                :in-any-order)))
 
 (deftest parse-swagger-response-v2-api-path
   (facts "parsing the swagger v2 response with only path and method"
          (parse-v2 "parser_v2_minimum_fields.json") =>
-         (just [{:path            "/ping/abc"
-                 :method          "GET"
-                 :service-name    nil,
-                 :service-version nil,
-                 :swagger-version "2.0"
-                 :servlet-context nil
-                 :summary         nil
-                 :ui-api-path     "/default/GET_ping_abc"}]
+         (just [{:path                    "/ping/abc"
+                 :method                  "GET"
+                 :service-name            nil,
+                 :service-version         nil,
+                 :swagger-version         "2.0"
+                 :servlet-context         nil
+                 :summary-and-description ""
+                 :responses               []
+                 :parameters              []
+                 :ui-api-path             "/default/GET_ping_abc"}]
                :in-any-order)))
 
 (deftest parse-swagger-response-v1
@@ -90,4 +92,3 @@
                  :servlet-context "/a-tomcat-service"}]
                :in-any-order)))
 
-(parse-v2 "v2_big_example.json")
