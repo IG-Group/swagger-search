@@ -2,4 +2,4 @@ FROM clojure:lein-2.7.1-alpine
 
 WORKDIR /app
 
-CMD ["lein", "with-profile", "+consul", "repl", ":headless" ]
+CMD ["lein", "do", "clean,", "repl", ":headless" ]

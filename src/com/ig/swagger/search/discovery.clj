@@ -1,4 +1,5 @@
-(ns com.ig.swagger.search.discovery)
+(ns com.ig.swagger.search.discovery
+  (:require [com.ig.swagger.search.discovery.providers [etcd consul file]]))
 
 (defn resolve-and-create [config f-name]
   (try
@@ -20,7 +21,11 @@
                                   (if (:classpath-file config)
                                     'com.ig.swagger.search.discovery.providers.file/from-classpath)
                                   (if (:server-list config)
-                                    'com.ig.swagger.search.discovery.providers.file/server-list)])
+                                    'com.ig.swagger.search.discovery.providers.file/server-list)
+                                  (if (:etcd config)
+                                    'com.ig.swagger.search.discovery.providers.etcd/create-etcd)
+                                  (if (:consul config)
+                                    'com.ig.swagger.search.discovery.providers.consul/create-consul)])
         sources (map (partial create-if-symbol config)
                      (concat discovery-providers
                              build-in-providers))]
