@@ -73,6 +73,8 @@
 
            (index/search* index "fan funding events" 10) =not=> []
 
+           (index/search* index "fan funding event" 10) =not=> []
+
            )))
 
 (comment
@@ -82,8 +84,12 @@
   (->>
     (index/search*
       (parse-and-index "youtube.json")
-      "fan funding events" 10)
+      "types:FanFundingEventSnippet" 10)
     )
+
+  (index/search*
+    (parse-and-index "youtube.json")
+    "fan funding event" 10)
 
   (->>
     (index/search*

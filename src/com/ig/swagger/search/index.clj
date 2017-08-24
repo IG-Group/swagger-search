@@ -3,7 +3,8 @@
   (:require [clucy.core :as clucy]
             cheshire.generate
             medley.core
-            [schema.core :as s]))
+            [schema.core :as s])
+  (:import org.apache.lucene.analysis.en.EnglishAnalyzer))
 
 (def ^{:private true} lucene-keys
   (medley.core/map-vals #(assoc % :type "string")
@@ -54,14 +55,17 @@
             (fn [params]
               (apply str (interpose " " (mapcat vals params)))))))
 
+(def analyzer (EnglishAnalyzer. clucy.core/*version*))
+
 (defn build-index [endpoints]
-  (let [index (empty-index)]
-    (some->> endpoints
-             (map (flattern-field :parameters))
-             (map (flattern-field :responses))
-             (map with-all-content)
-             (apply clucy.core/add index))
-    index))
+  (binding [clucy.core/*analyzer* analyzer]
+    (let [index (empty-index)]
+      (some->> endpoints
+               (map (flattern-field :parameters))
+               (map (flattern-field :responses))
+               (map with-all-content)
+               (apply clucy.core/add index))
+      index)))
 
 (defn build-state [{:keys [index-data all-data]}]
   {:index    (build-index index-data)
@@ -75,7 +79,8 @@
   (reset! state (build-state collect-result)))
 
 (defn search* [index query max-results]
-  (clucy/search index query max-results :default-field :all-content :default-operator :and))
+  (binding [clucy.core/*analyzer* analyzer]
+    (clucy/search index query max-results :default-field :all-content :default-operator :and)))
 
 (defn search [state q]
   (search* (:index @state) q 100))
