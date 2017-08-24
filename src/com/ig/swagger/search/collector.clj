@@ -94,16 +94,26 @@
 ;;;
 ;;; Gluing everything togheter
 ;;;
+(defn preserve-service-url-in-case-of-exception [f data]
+  (try
+    (f data)
+    (catch Throwable e
+      (throw (Exception.
+               (str "Unexpected exception " (:service-url data))
+               e)))))
+
 
 (defn pipe [& fns]
   (fn [data]
     (reduce (fn [data f]
-              (let [new-data (merge data (f data))]
+              (let [new-data (merge data
+                                    (preserve-service-url-in-case-of-exception f data))]
                 (if (:error new-data)
                   (reduced new-data)
                   new-data)))
             data
             fns)))
+
 
 (defn if-version [f-v1 f-v2]
   (fn [{swagger-doc :swagger-doc :as data}]
