@@ -92,3 +92,50 @@
                  :servlet-context "/a-tomcat-service"}]
                :in-any-order)))
 
+(deftest circular-refs
+         (facts "works"
+                (->
+                  {:definitions
+                   {:a
+                    {:type        "object",
+                     :description "a",
+                     :properties  {:child {:$ref "#/definitions/b"}}}
+                    :b
+                    {:type       "object",
+                     :properties {:child {:$ref "#/definitions/c"}}}
+                    :c
+                    {:type       "object",
+                     :properties {:child {:$ref "#/definitions/a"}}}}}
+                  parser/resolve-refs
+                  (get-in [:definitions :a
+                           :properties :child
+                           :properties :child
+                           :properties :child
+                           :description]))
+                => "a"
+
+                (->
+                  {:definitions
+                   {:a
+                    {:type        "object",
+                     :description "a",
+                     :properties  {:id       {:type "integer"},
+                                   :name     {:type "string", :description "Category name"},
+                                   :children {:type  "array",
+                                              :items {:$ref "#/definitions/b"}}
+                                   :parent   {:$ref "#/definitions/a"}}}
+                    :b
+                    {:type        "object",
+                     :description "b",
+                     :properties  {:id       {:type "integer"},
+                                   :name     {:type "string", :description "the other name"},
+                                   :children {:type  "array",
+                                              :items {:$ref "#/definitions/a"}}}}}}
+                  parser/resolve-refs
+                  (get-in [:definitions :a
+                           :properties :children :items
+                           :properties :children :items
+                           :description
+                           ]))
+                => "a"
+                ))

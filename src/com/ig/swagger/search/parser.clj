@@ -2,6 +2,7 @@
   (:use [clojure.tools.logging :only [error info]])
   (:require [clojure.set]
             clojure.walk
+            medley.core
             [ring.util.codec :as codec]
             [clojure.string :as string]
             [clojure.string :as str]))
@@ -30,10 +31,6 @@
 
 (defn- ref->keyword-path [ref]
   (map keyword (rest (string/split ref #"/"))))
-
-(defn- find-ref [swagger-doc ref]
-  (let [path (ref->keyword-path ref)]
-    (get-in swagger-doc path)))
 
 (defn fields [schema]
   (cond
@@ -83,13 +80,28 @@
 (defn get-controller-paths [swagger-paths]
   (vec (mapcat get-controller-methods swagger-paths)))
 
-(defn resolve-refs [swagger-doc]
-  (clojure.walk/prewalk (fn [m]
-                          (if (and (map? m) (:$ref m))
-                            (merge
-                              m
-                              (find-ref swagger-doc (:$ref m)))
-                            m)) swagger-doc))
+(defn- find-ref [swagger-doc ref]
+  (let [path (ref->keyword-path ref)]
+    (get-in swagger-doc path)))
+
+(defn resolve-refs
+  ([swagger-doc] (resolve-refs swagger-doc #{} swagger-doc))
+  ([swagger-doc visited-refs form]
+   (if (and (map? form)
+            (:$ref form)
+            (not (visited-refs (:$ref form))))
+     (let [next-level (partial resolve-refs swagger-doc (conj visited-refs (:$ref form)))
+           resolved-ref (merge form
+                               (find-ref swagger-doc (:$ref form)))]
+       (medley.core/map-vals next-level resolved-ref))
+     (let [next-level (partial resolve-refs swagger-doc visited-refs)]
+       (cond
+         (list? form) (apply list (map next-level form))
+         (instance? clojure.lang.IMapEntry form) (vec (map next-level form))
+         (seq? form) (doall (map next-level form))
+         (coll? form) (into (empty form) (map next-level form))
+         :else form)))))
+
 
 (defn index-data-for-v2 [{:keys [swagger-doc]}]
   (let [swagger-doc (resolve-refs swagger-doc)
