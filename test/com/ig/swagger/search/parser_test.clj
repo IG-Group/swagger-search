@@ -61,16 +61,16 @@
 (deftest parse-swagger-response-v2-api-path
   (facts "parsing the swagger v2 response with only path and method"
          (parse-v2 "parser_v2_minimum_fields.json") =>
-         (just [{:path                    "/ping/abc"
-                 :method                  "GET"
-                 :service-name            nil,
-                 :service-version         nil,
-                 :swagger-version         "2.0"
-                 :servlet-context         nil
-                 :summary-and-description ""
-                 :responses               []
-                 :parameters              []
-                 :ui-api-path             "/default/GET_ping_abc"}]
+         (just [(contains {:path                    "/ping/abc"
+                           :method                  "GET"
+                           :service-name            nil,
+                           :service-version         nil,
+                           :swagger-version         "2.0"
+                           :servlet-context         nil
+                           :summary-and-description ""
+                           :responses               []
+                           :parameters              []
+                           :ui-api-path             "/default/GET_ping_abc"})]
                :in-any-order)))
 
 (deftest parse-swagger-response-v1
