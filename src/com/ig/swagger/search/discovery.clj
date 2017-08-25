@@ -1,5 +1,4 @@
-(ns com.ig.swagger.search.discovery
-  (:require [com.ig.swagger.search.discovery.providers [etcd consul file]]))
+(ns com.ig.swagger.search.discovery)
 
 (defn resolve-and-create [config f-name]
   (try
