@@ -1,4 +1,4 @@
-(defproject ig/swagger-search "0.1.4-SNAPSHOT"
+(defproject ig/swagger-search "0.1.4"
   :description "An application that collects and indexes swagger docs from your microservices architecture"
   :url "https://github.com/IG-Group/swagger-search"
   :license {:name "Apache License 2.0"
