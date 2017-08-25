@@ -49,19 +49,17 @@
       :field-names
       (fields schema))))
 
-(defn types-fields [param]
+(defn find-types [param]
   (let [schema (:schema param param)
+        param-type (:type schema)
         type (if (and (:$ref schema)
-                      (= "object" (:type schema)))
+                      (= "object" param-type))
                (stringify (last (ref->keyword-path (:$ref schema)))))]
     (cons type
           (cond
-            (= "object" (:type schema)) (vec (mapcat types-fields (vals (:properties schema))))
-            (= "array" (:type schema)) (types-fields (:items schema))
+            (= "object" param-type) (vec (mapcat find-types (vals (:properties schema))))
+            (= "array" param-type) (find-types (:items schema))
             :default nil))))
-
-(defn- find-types [param]
-  (types-fields param))
 
 (defn get-controller-data
   [global-params path [method operation]]
