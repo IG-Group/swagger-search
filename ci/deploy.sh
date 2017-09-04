@@ -10,4 +10,4 @@ if [[ "${TRAVIS_PULL_REQUEST}" != "false" ]]; then
     exit 0
 fi
 
-lein with-profile +common uberjar
+lein with-profile +not-lib uberjar
