@@ -96,6 +96,10 @@
     (parse-and-index "youtube.json")
     "method:put The part parameter specifies a comma-separated list of commentThread resource properties that " 10)
 
+  (index/search*
+    (parse-and-index "magento.json")
+    "catalog-data-category-tree-interface" 10)
+
   (->>
     (index/search*
       (parse-and-index "v2_big_example.json")

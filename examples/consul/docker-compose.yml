@@ -1,12 +1,9 @@
 version: "3"
 services:
- etcd:
-  image: quay.io/coreos/etcd:v2.2.0
-  command: >
-     -listen-client-urls http://0.0.0.0:4001
-     -advertise-client-urls http://etcd:4001
-  ports:
-    - 4001
+ consul:
+   image: consul:0.9.0
+   ports:
+    - "8500:8500"
  api-sample-1:
     build: ../api-example-1
     ports:
@@ -27,16 +24,16 @@ services:
      - "8503:8503"
      - "8504:3000"
     volumes:
-     - ../:/app
+     - ../../:/app
      - ./swagger-search:/swagger-config
      - ~/.m2:/root/.m2
      - ~/.lein:/root/.lein
     environment:
-     - SWAGGER_CONF=/swagger-config/etcd.swagger.config.edn
+     - SWAGGER_CONF=/swagger-config/consul.swagger.config.edn
  registrator:
-  command: -internal=true etcd://etcd:4001/services
+  command: -internal=true consul://consul:8500
   image: gliderlabs/registrator:v7
   links:
-    - etcd
+    - consul
   volumes:
     - /var/run/docker.sock:/tmp/docker.sock
