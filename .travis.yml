@@ -9,3 +9,6 @@ cache:
 
 script:
   - ./ci/build.sh
+
+after_success:
+  - ./ci/deploy.sh
