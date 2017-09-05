@@ -46,6 +46,6 @@ echo "Tag done"
 git push --tags --quiet https://$GITHUBKEY@github.com/IG-Group/swagger-search master > /dev/null 2>&1
 echo "Pushing"
 
-
 lein with-profile +set-version set-version $VERSION
 lein with-profile +not-lib uberjar
+lein deploy clojars
