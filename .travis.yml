@@ -13,9 +13,6 @@ script:
 after_success:
   - ./ci/deploy.sh
 
-branches:
-  except:
-    - /^v[0-9]/
 env:
   global:
     secure: CHhXiCTixhcH+GtLh4WYe6u1qZJdpDKmIGk4+VuIs6HtIzHl9I+dca8z0gzZ+KUD2SvZHRqIN9PAQVxMszFAuJwK0yW6KVV71YPohR05DWDciG5JBNknKz6EIsTYNqNw5aw5tfUK89WyVtC1C1H9CJJRlM0Pd25n6/neINcUh9yX3MLJPFelOpV6MpTD0ag8XcOskimM4n6E5G9f9hKXNV7Z9ENsWvXKh9Iym3x4maz/Cc6O0GM0yMMp9NACZWIbI1qrYribOUbqAzOJi9cpCnKFJ4G6tQhAkbczU9X86VyCYyIQaj/xfpAkk8Qk3eXZaeXr3Rpqs+hceQ7XPA10kUTXcHjNIZ7qwkQSSU11uS+auZTCxvbuc9riPkq+RtAc5alUcowNAWf1VOPH7+3acAlNxdIRAQobNqS+HEB63aHPhBGVwsLUHLSLKGWRNp+ycssYBmSjfdoSAUmat0rn0fTb2x1ukHcX+747gPfItZYRmY7cxETag3Ivbe7b4nwSlzebolFzXirQJ3jJv1XSON3M0RzybuePdh5Cefi6sCiZegiKyO0ig0HGmu3o7uZJKaPVDwWBHcoPbUnBn41hfJsh2Loa2Q2Ir+mfD8/uvXGhFGeZm4lgw2KQIqmP7WV9ObgJ5lfd4QhBODp0rC2Ll7jd8VWMIjBA9OsO8p1e85E=
@@ -25,10 +22,8 @@ deploy:
   skip_cleanup: true
   api_key:
     secure: HL4KEMnnnR+g0pVYNnaOo/fSx7ktVB5KmnZzx6LyiSa8jGebmvPQPwvHyb/NO9b+bCL6F7wrxXGJa4+IokPqzKitbFU4ob0iLe/pXPioP9zbsJg9Rk7/DE/U3EzIvug7k7v2Vyfi4Fc7zxWvnWbB0sNar6LukioRZVkT0EH+iQoawWBChQT6FBQW2ATNKlvUbxC4qjflCP+N44q5VOnWSc211RNfQOH1Icd9xYnW62GmYUk6Wbwz79y9dqKzpi1Y4j8rWkbDELSi8kBuEzbMHjM0avwwwY/yJmGwxn/SdNTv1DrfmVpdmG9VbWEHUwOl4IIqoIaiaVG5kt/2DCuwOzDbanXmAUiPvI/sz1xBH5DTWtrY7zoFBMD51o13AuWAZoPXyKBU3t+brG+64IuR79MFS9Ms0NM0dpMbJLW5mkdqlAMbqKXjm+yF/ao48BjAyoddJ3uY3LPfSKkz8O79gFEOvd0b/7p6McMom1P7h6/WqVT5rudy+zvCFFbhs95cVDUexil5AfJVRoIccJuzsEhOpoNtBss+HOWAPsQfuIb4oyyk6BRxa2/Iuy7MFPxraxEDtrjLxDWnvmybYybGWj87c7GL9VQowNDb3rAiUresSGgSUxUcoaNlzZ6Rms9s2GgEch2pPqrwYGHjRrUexLh9S8rCXFmfbutzt+OxKxU=
-  file: target/uberjar.jar
   file_glob: true
   file: target/*standalone.jar
   on:
     repo: IG-Group/swagger-search
-    tags: false
-    branch: master
+    tags: true
