@@ -49,7 +49,7 @@ if [ $LAST_COMMIT_AUTHOR_EMAIL != $AUTOMATED_AUTHOR_EMAIL ]; then
     echo "Pushing"
 
 else
-    if [[ "${TRAVIS_BRANCH}" =~ ^v[1-9] ]]; then
+    if [[ "${TRAVIS_BRANCH}" =~ ^v[0-9] ]]; then
         echo "Deploying version $VERSION"
         lein with-profile +set-version set-version $VERSION
         lein with-profile +not-lib uberjar
