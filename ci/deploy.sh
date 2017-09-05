@@ -10,7 +10,6 @@ increment_version ()
 
   for (( CNTR=${#part[@]}-1; CNTR>=0; CNTR-=1 )); do
     new=$((part[CNTR]+carry))
-    echo $new
     carry=0
     part[CNTR]=${new}
   done
