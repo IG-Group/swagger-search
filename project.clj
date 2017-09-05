@@ -38,6 +38,7 @@
                                           [consul-clojure "0.7.1"]
                                           [etcd-clojure "0.2.4"]]
                            :source-paths ["standalone"]}}
-  :repositories [["releases" {:url      "https://clojars.org/repo"
-                              :username :env/clojars_username
-                              :password :env/clojars_password}]])
+  :repositories [["releases" {:url           "https://clojars.org/repo"
+                              :sign-releases false
+                              :username      :env/clojars_username
+                              :password      :env/clojars_password}]])
