@@ -12,3 +12,7 @@ script:
 
 after_success:
   - ./ci/deploy.sh
+
+branches:
+  except:
+    - /^v[0-9]/
