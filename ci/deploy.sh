@@ -38,7 +38,7 @@ export GIT_TAG=v$VERSION
 git commit -m "Set next build VERSION number" version
 git tag $GIT_TAG -a -m "Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER"
 echo "Tag done"
-git push --quiet https://$GITHUBKEY@github.com/dev-confidence/example-backend-api $GIT_TAG > /dev/null 2>&1
+git push --quiet https://$GITHUBKEY@github.com/IG-Group/swagger-search $GIT_TAG > /dev/null 2>&1
 echo "Pushing"
 
 
