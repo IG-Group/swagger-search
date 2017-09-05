@@ -33,6 +33,7 @@ increment_version $VERSION > version
 # CREATE GIT TAG
 git config --global user.email "builds@travis-ci.com"
 git config --global user.name "Travis CI"
+git checkout "$TRAVIS_BRANCH"
 export GIT_TAG=v$VERSION
 git commit -m "Set next build VERSION number" version
 git tag $GIT_TAG -a -m "Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER"
