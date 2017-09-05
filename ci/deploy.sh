@@ -39,13 +39,14 @@ increment_version $VERSION > version
 git config --global user.email $AUTOMATED_AUTHOR_EMAIL
 git config --global user.name "Travis CI"
 git checkout "$TRAVIS_BRANCH"
+
+lein with-profile +set-version set-version $VERSION
+lein with-profile +not-lib uberjar
+lein deploy releases
+
 export GIT_TAG=v$VERSION
 git commit -m "Set next build VERSION number" version
 git tag $GIT_TAG -a -m "Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER"
 echo "Tag done"
 git push --tags --quiet https://$GITHUBKEY@github.com/IG-Group/swagger-search master > /dev/null 2>&1
 echo "Pushing"
-
-lein with-profile +set-version set-version $VERSION
-lein with-profile +not-lib uberjar
-lein deploy clojars
