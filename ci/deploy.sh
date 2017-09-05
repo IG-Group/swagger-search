@@ -19,7 +19,7 @@ increment_version ()
 
 echo "Branch is $TRAVIS_BRANCH"
 
-if ! [[ "${TRAVIS_BRANCH}" == "master" || "${TRAVIS_BRANCH}" =~ ^v[1-9] ]]; then
+if ! [[ "${TRAVIS_BRANCH}" == "master" || "${TRAVIS_BRANCH}" =~ ^v[0-9] ]]; then
     exit 0
 fi
 
