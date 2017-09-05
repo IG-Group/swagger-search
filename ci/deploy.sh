@@ -17,7 +17,9 @@ increment_version ()
   echo -e "${new// /.}"
 }
 
-if [[ "${TRAVIS_BRANCH}" != "master" ]]; then
+echo "Branch is $TRAVIS_BRANCH"
+
+if ! [[ "${TRAVIS_BRANCH}" == "master" || "${TRAVIS_BRANCH}" =~ ^v[1-9] ]]; then
     exit 0
 fi
 
@@ -47,8 +49,12 @@ if [ $LAST_COMMIT_AUTHOR_EMAIL != $AUTOMATED_AUTHOR_EMAIL ]; then
     echo "Pushing"
 
 else
-    echo "Deploying version $VERSION"
-    lein with-profile +set-version set-version $VERSION
-    lein with-profile +not-lib uberjar
-    lein deploy releases
+    if [[ "${TRAVIS_BRANCH}" =~ ^v[1-9] ]]; then
+        echo "Deploying version $VERSION"
+        lein with-profile +set-version set-version $VERSION
+        lein with-profile +not-lib uberjar
+        lein deploy releases
+    else
+        exit 0
+    fi
 fi
