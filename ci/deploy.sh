@@ -41,7 +41,7 @@ if [ $LAST_COMMIT_AUTHOR_EMAIL != $AUTOMATED_AUTHOR_EMAIL ]; then
 
     increment_version $VERSION > version
     echo "Current version $VERSION, next version `cat version`"
-    export GIT_TAG=v$VERSION
+    export GIT_TAG=v`cat version`
     git commit -m "Set release build VERSION number" version
     git tag $GIT_TAG -a -m "Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER"
     echo "Tag done"
