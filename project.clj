@@ -18,24 +18,24 @@
                  [selmer "1.0.4"]
                  [schejulure "1.0.1"]
                  [org.tcrawley/dynapath "0.2.4"]]
-  :profiles {:dev     [:not-lib :ss/dev]
-             :uberjar {:aot         :all
-                       :omit-source true
-                       :main        com.ig.swagger.search.standalone}
-             :set-version [[lein-set-version "0.4.1"]]
-             :not-lib {:dependencies [[ch.qos.logback/logback-classic "1.2.3"]
-                                      [org.slf4j/log4j-over-slf4j "1.7.25"]
-                                      [org.slf4j/jcl-over-slf4j "1.7.25"]
-                                      [ring/ring-jetty-adapter "1.5.0"]
-                                      [consul-clojure "0.7.1"]
-                                      [etcd-clojure "0.2.4"]]
-                       :source-paths ["standalone"]}
-             :ss/dev  {:dependencies [[ring/ring-mock "0.3.0"]
-                                      [midje "1.8.3"]]
-                       :source-paths ["dev"]
-                       :repl-options {:init-ns dev
-                                      :init    (do
-                                                 (println "Starting ...")
-                                                 (go))
-                                      :host    "0.0.0.0"
-                                      :port    8503}}})
+  :profiles {:dev         [:not-lib :ss/dev]
+             :uberjar     {:aot         :all
+                           :omit-source true
+                           :main        com.ig.swagger.search.standalone}
+             :set-version {:dependencies [[lein-set-version "0.4.1"]]}
+             :not-lib     {:dependencies [[ch.qos.logback/logback-classic "1.2.3"]
+                                          [org.slf4j/log4j-over-slf4j "1.7.25"]
+                                          [org.slf4j/jcl-over-slf4j "1.7.25"]
+                                          [ring/ring-jetty-adapter "1.5.0"]
+                                          [consul-clojure "0.7.1"]
+                                          [etcd-clojure "0.2.4"]]
+                           :source-paths ["standalone"]}
+             :ss/dev      {:dependencies [[ring/ring-mock "0.3.0"]
+                                          [midje "1.8.3"]]
+                           :source-paths ["dev"]
+                           :repl-options {:init-ns dev
+                                          :init    (do
+                                                     (println "Starting ...")
+                                                     (go))
+                                          :host    "0.0.0.0"
+                                          :port    8503}}})
