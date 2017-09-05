@@ -22,7 +22,7 @@
              :uberjar     {:aot         :all
                            :omit-source true
                            :main        com.ig.swagger.search.standalone}
-             :set-version {:dependencies [[lein-set-version "0.4.1"]]}
+             :set-version {:plugins [[lein-set-version "0.4.1"]]}
              :not-lib     {:dependencies [[ch.qos.logback/logback-classic "1.2.3"]
                                           [org.slf4j/log4j-over-slf4j "1.7.25"]
                                           [org.slf4j/jcl-over-slf4j "1.7.25"]
