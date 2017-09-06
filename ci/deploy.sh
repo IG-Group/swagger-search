@@ -52,8 +52,8 @@ else
     if [[ "${TRAVIS_BRANCH}" =~ ^v[0-9] ]]; then
         echo "Deploying version $VERSION"
         lein with-profile +set-version set-version $VERSION
-        lein with-profile +not-lib uberjar
         lein deploy releases
+        lein with-profile +not-lib uberjar
     else
         exit 0
     fi
