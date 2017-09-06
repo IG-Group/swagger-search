@@ -18,6 +18,9 @@ env:
     secure: CHhXiCTixhcH+GtLh4WYe6u1qZJdpDKmIGk4+VuIs6HtIzHl9I+dca8z0gzZ+KUD2SvZHRqIN9PAQVxMszFAuJwK0yW6KVV71YPohR05DWDciG5JBNknKz6EIsTYNqNw5aw5tfUK89WyVtC1C1H9CJJRlM0Pd25n6/neINcUh9yX3MLJPFelOpV6MpTD0ag8XcOskimM4n6E5G9f9hKXNV7Z9ENsWvXKh9Iym3x4maz/Cc6O0GM0yMMp9NACZWIbI1qrYribOUbqAzOJi9cpCnKFJ4G6tQhAkbczU9X86VyCYyIQaj/xfpAkk8Qk3eXZaeXr3Rpqs+hceQ7XPA10kUTXcHjNIZ7qwkQSSU11uS+auZTCxvbuc9riPkq+RtAc5alUcowNAWf1VOPH7+3acAlNxdIRAQobNqS+HEB63aHPhBGVwsLUHLSLKGWRNp+ycssYBmSjfdoSAUmat0rn0fTb2x1ukHcX+747gPfItZYRmY7cxETag3Ivbe7b4nwSlzebolFzXirQJ3jJv1XSON3M0RzybuePdh5Cefi6sCiZegiKyO0ig0HGmu3o7uZJKaPVDwWBHcoPbUnBn41hfJsh2Loa2Q2Ir+mfD8/uvXGhFGeZm4lgw2KQIqmP7WV9ObgJ5lfd4QhBODp0rC2Ll7jd8VWMIjBA9OsO8p1e85E=
 
 before_deploy:
+  - ls
+  - ls target
+  - pwd
   - export RELEASE_PKG_FILE=$(ls target/*standalone*)
   - echo "deploying $RELEASE_PKG_FILE to GitHub releases"
 
