@@ -156,7 +156,7 @@
      :initial-load-task (future (run-indexing))
      :index-fn          run-indexing
      :scheduled-task    (schedule/schedule                  ;; TODO: make schedule configurable
-                          {:minute (range 0 60 5)} run-indexing)}))
+                          {:minute (range 0 60 15)} run-indexing)}))
 
 (defn destroy-component [{:keys [scheduled-task json-client http-client initial-load-task]}]
     (when scheduled-task
