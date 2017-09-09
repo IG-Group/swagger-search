@@ -12,8 +12,10 @@
 (defn start [system-atom config]
   (let [system (search/system-start config)]
     (reset! system-atom (assoc system
-                          :jetty (jetty/run-jetty (:routes system) {:port  3000
-                                                                    :join? false})))))
+                          :jetty (jetty/run-jetty (:routes system)
+                                                  {:port  (get-in config [:standalone :port] 3000)
+                                                   :host  (get-in config [:standalone :host] "0.0.0.0")
+                                                   :join? false})))))
 
 (defn stop [system-atom]
   (when-let [system @system-atom]
@@ -52,7 +54,4 @@
 
         config (find-config-file)]
     (add-libs-to-classpath home-dir)
-    (start the-system config)
-    (let [value (Object.)]
-      (locking value
-        (.await value)))))
+    (start the-system config)))
