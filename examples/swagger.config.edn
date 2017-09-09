@@ -1,0 +1,53 @@
+{
+ :standalone   {
+                ;; On which host and port to listen
+                :host "0.0.0.0"
+                :port 3000}
+ ;; Http client used by the proxy endpoint
+ :proxy-client {:connection-timeout 10000
+                :request-timeout    10000
+                :max-connections    200}
+ :collector    {
+                ;; Http client used to collect the swagger docs
+                :http-config                 {:connection-timeout 10000
+                                              :request-timeout    10000
+                                              :max-connections    200}
+                ; For each service, Swagger Search will try each of the following paths.
+                ; The first one that returns a 200 with JSON will be assumed to be the swagger doc
+                ; If no suffix required, specify the empty string [""]
+                :possible-swagger-doc-suffix ["/v2/api-docs/" "/swagger/swagger.json" "/api-docs"]
+
+                ; Same as possible-swagger-doc-suffix but for the Swagger UI.
+                ; To disable, comment out.
+                :possible-swagger-ui-suffix  ["/swagger/ui/index.html" "/swagger-ui.html" "/swagger/index.html" "/swagger/ui/swagger-ui.html"]
+                }
+
+ ;; At least one service discovery mechanism must be specified.
+
+ ;; A harcoded list of endpoints. To refresh the list, Swagger Search will need to be restarted
+ ;:server-list  ["https://watson-api-explorer.mybluemix.net/listings/conversation-v1.json"
+ ;               "http://devdocs.magento.com/swagger/schemas/latest-2.1.schema.json"
+ ;               "https://api.apis.guru/v2/specs/googleapis.com/youtube/v3/swagger.json"]
+
+ ;; A path to a local file or a url.
+ ;; One line per service.
+ ;:uri-or-file         "http://your-custom-service-discovery/a-list"
+
+ ;; A file in the classpath
+ ;; One line per service.
+ ;:classpath-file      "server-list"
+
+ ;; Consul service discovery
+ ;:consul       {:host "consul"
+ ;               :port 8500}
+
+ ;; Etcd service discovery
+ ;:etcd         {:host   "etcd"
+ ;               :port   4001
+ ;               :prefix "/services"}
+
+ ; For custom sevice discovery mechanism, specify here a function or functions to create it.
+ ; See com.ig.swagger.search.discovery.providers.etcd/create-etcd as an example.
+ ;:discovery-providers [your.custom.service.discovery/create-service-discovery]
+
+ }
