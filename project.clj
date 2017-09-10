@@ -37,6 +37,7 @@
                                           [ring/ring-jetty-adapter "1.5.0"]
                                           [consul-clojure "0.7.1"]
                                           [etcd-clojure "0.2.4"]]
+                           :resource-paths ["standalone-resources"]
                            :source-paths ["standalone"]}}
   :repositories [["releases" {:url           "https://clojars.org/repo"
                               :sign-releases false
