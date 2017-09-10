@@ -30,11 +30,13 @@
   (if key (name key)))
 
 (defn- ref->keyword-path [ref]
-  (map keyword (rest (string/split ref #"/"))))
+  (when (string? ref)
+    (map keyword (rest (string/split ref #"/")))))
 
 (defn fields [schema]
   (cond
     (= "object" (:type schema)) (vec (concat (keys (:properties schema))
+                                             [(fields (:additionalProperties schema))]
                                              (mapcat fields (vals (:properties schema)))))
     (= "array" (:type schema)) (fields (:items schema))
     :default nil))
@@ -54,13 +56,15 @@
                (stringify (last (ref->keyword-path (:$ref schema)))))]
     (cons type
           (cond
-            (= "object" param-type) (vec (mapcat find-types (vals (:properties schema))))
+            (= "object" param-type) (vec (mapcat find-types (cons
+                                                              (:additionalProperties schema)
+                                                              (vals (:properties schema)))))
             (= "array" param-type) (find-types (:items schema))
             :default nil))))
 
 (defn get-controller-data
   [global-params path [method operation]]
-  (let [api-path (encode-ui-path (first (:tags operation ["default"]))
+  (let [api-path (encode-ui-path (or (first (:tags operation)) "default")
                                  (or (:operationId operation)
                                      (str (name method) "_" (name path))))]
     {:method                  (name method)

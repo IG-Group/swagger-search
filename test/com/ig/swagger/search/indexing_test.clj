@@ -11,7 +11,6 @@
     (index/build-index endpoints)))
 
 (let [index (parse-and-index "v2_big_example.json")]
-  (def index index)
   (deftest index-and-search []
     (facts "ui path is not indexed but it is stored"
            (index/search* index "post_minus" 10) => []
@@ -65,7 +64,6 @@
   )
 
 (let [index (parse-and-index "youtube.json")]
-  (def index index)
   (deftest youtube []
     (facts "can search types"
            (index/search* index "types:FanFundingEventSnippet" 10) =not=> []
@@ -81,6 +79,13 @@
            (index/search* index "fan funding event" 10) =not=> []
 
            )))
+
+
+(let [index (parse-and-index "swagger-describing-json-schema.json")]
+  (deftest schema-in-schema []
+    (facts "it works"
+           (index/search* index "responses:ref" 10) =not=> []
+           (index/search* index "types:JsonSchema" 10) =not=> [])))
 
 (comment
 
