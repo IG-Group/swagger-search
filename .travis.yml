@@ -3,6 +3,9 @@ language: clojure
 jdk:
   - oraclejdk8
 
+services:
+  - docker
+
 cache:
   directories:
   - $HOME/.m2
