@@ -54,6 +54,12 @@ else
         lein with-profile +set-version set-version $VERSION
         lein deploy releases
         lein with-profile +not-lib uberjar
+
+        IMAGE_NAME="danlebrero/swagger-search:${VERSION}"
+        docker build -t ${IMAGE_NAME} .
+        # Pushing images
+        docker login -u="${DOCKERHUB_USERNAME}" -p="${DOCKERHUB_PASSWORD}"
+        docker push "$IMAGE_NAME"
     else
         exit 0
     fi
