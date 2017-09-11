@@ -8,10 +8,6 @@ their url, documentation, the parameters it accepts or their types.
 
 Swagger Search also provides a Swagger UI for those microservices that haven't their own Swagger UI embedded.
 
-## Motivation
-
-See [http://danlebrero.com/...]()
-
 ## Features
 
 Integrated with [Etcd](https://github.com/coreos/etcd) and [Consul](https://www.consul.io/) for service discovery, or 
@@ -44,6 +40,8 @@ Copy or make the swagger.config.edn avaible in */config* inside the container, s
 ```
 docker run -p 7878:3000 -v examples:/config ig/swagger-search
 ```
+
+Open a browser at http://localhost:7878/
 
 See [DockerHub](TODO) for the latest version.
 
