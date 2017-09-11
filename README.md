@@ -38,7 +38,7 @@ configuration options.
 Copy or make the swagger.config.edn avaible in */config* inside the container, something like:
 
 ```
-docker run -p 7878:3000 -v examples:/config danlebrero/swagger-search
+docker run -p 7878:3000 -v `pwd`/examples:/config danlebrero/swagger-search
 ```
 
 Open a browser at http://localhost:7878/
