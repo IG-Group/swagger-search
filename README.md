@@ -38,12 +38,12 @@ configuration options.
 Copy or make the swagger.config.edn avaible in */config* inside the container, something like:
 
 ```
-docker run -p 7878:3000 -v examples:/config ig/swagger-search
+docker run -p 7878:3000 -v examples:/config danlebrero/swagger-search
 ```
 
 Open a browser at http://localhost:7878/
 
-See [DockerHub](TODO) for the latest version.
+See [DockerHub](https://hub.docker.com/r/danlebrero/swagger-search/) for the latest version.
 
 #### Uberjar
 
