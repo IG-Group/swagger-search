@@ -56,10 +56,11 @@ else
         lein with-profile +not-lib uberjar
 
         IMAGE_NAME="danlebrero/swagger-search:${VERSION}"
-        docker build -t ${IMAGE_NAME} .
+        docker build -t ${IMAGE_NAME} -t danlebrero/swagger-search:latest .
         # Pushing images
         docker login -u="${DOCKERHUB_USERNAME}" -p="${DOCKERHUB_PASSWORD}"
         docker push "$IMAGE_NAME"
+        docker push danlebrero/swagger-search:latest
     else
         exit 0
     fi
