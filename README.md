@@ -10,8 +10,12 @@ Swagger Search also provides a Swagger UI for those microservices that haven't t
 
 ## Features
 
+#### Service discovery
+
 Integrated with [Etcd](https://github.com/coreos/etcd) and [Consul](https://www.consul.io/) for service discovery, or 
 your can plug your own.
+
+#### Search
 
 The search is powered by [Lucene](https://lucene.apache.org/core/), so you can use the [Lucene's query syntax](http://lucene.apache.org/core/2_9_4/queryparsersyntax.html#Terms).
 An English analyzer is used.
@@ -28,9 +32,19 @@ The available fields are:
 
 If no field is specified, all of them will be used.
 
+#### Swagger UI and proxy
+
+For each service, Swagger Search will try to find if that service comes with its own Swagger UI. 
+
+If it does, Swagger Search will use that UI when you click on a search result for that particular service.
+
+If it does not, Swagger Search will use its own Swagger UI and a proxy to forward the requests.
+
+Note that this proxy is very naive, so do not expose it outside your trusted network as it does not do any validations.
+
 ## Run it
 
-First you need to create a configuration file. Look at the [example](/example/swagger.config.edn), which contains all the 
+First you need to create a configuration file. Look at the [example](examples/swagger.config.edn), which contains all the 
 configuration options.
 
 #### Docker
@@ -50,7 +64,7 @@ See [DockerHub](https://hub.docker.com/r/danlebrero/swagger-search/) for the lat
 Instead of Docker, you can just run the application manually as a JVM application:
 
 1. Install Java 8
-1. Download the [latest release jar](releases)
+1. Download the [latest release jar](/releases)
 1. Specify the *SWAGGER_HOME* directory as a environment variable 
 1. Place the configuration file in the *SWAGGER_HOME* directory. It must be called *swagger.config.edn*
 1. Run:
@@ -79,7 +93,7 @@ service discovery
 
 Your best option is to learn Clojure. It will do you a lot of good :stuck_out_tongue_winking_eye:.
 
-Failing that, use the *:uri-or-file* provider and have a process that updates the file or have a HTTP server that is
+Failing that, use the *:uri-or-file* provider and have a process that updates the file or write some HTTP server that is
 able to return the list of services.
 
 #### Plugin a new provider
@@ -98,11 +112,10 @@ in [Clojars](https://clojars.org/ig/swagger-search).
 
 See the [uberjar code](standalone/com/ig/swagger/search/standalone.clj) as guide about how you can use it as a library. 
 
-## Known issues
+## Known limitations
 
 1. No support for OpenAPI 3.0.
-1. Swagger 1.2 just indexes the url.
-1. Not tested with Swagger < 1.2.
+1. Swagger 1.2 and below just indexes the url.
 1. Index is stored in memory. 
 
 ## Development
@@ -119,6 +132,6 @@ Swagger Search will be available at [http://localhost:8504/](http://localhost:85
 
 ## License
 
-Copyright © 2016 IG Group
+Copyright © 2017 IG Group
 
 Distributed under Apache Licence 2.0.
