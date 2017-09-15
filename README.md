@@ -64,7 +64,7 @@ See [DockerHub](https://hub.docker.com/r/danlebrero/swagger-search/) for the lat
 Instead of Docker, you can just run the application manually as a JVM application:
 
 1. Install Java 8
-1. Download the [latest release jar](/releases)
+1. Download the [latest release jar](https://github.com/IG-Group/swagger-search/releases)
 1. Specify the *SWAGGER_HOME* directory as a environment variable 
 1. Place the configuration file in the *SWAGGER_HOME* directory. It must be called *swagger.config.edn*
 1. Run:
