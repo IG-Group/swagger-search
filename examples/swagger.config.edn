@@ -15,7 +15,7 @@
                 ; For each service, Swagger Search will try each of the following paths.
                 ; The first one that returns a 200 with JSON will be assumed to be the swagger doc
                 ; If no suffix required, specify the empty string [""]
-                :possible-swagger-doc-suffix ["/v2/api-docs/" "/swagger/swagger.json" "/api-docs"]
+                :possible-swagger-doc-suffix [ "/swagger/swagger.json" ""]
 
                 ; Same as possible-swagger-doc-suffix but for the Swagger UI.
                 ; To disable, comment out.
