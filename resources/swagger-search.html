@@ -53,7 +53,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {% if swagger-services|not-empty %}
                                     <ul class="list" style="list-style-type:none">
                                         {% for service in swagger-services|sort-by:service-name %}
                                         <li>
@@ -67,7 +66,6 @@
                                         </li>
                                         {% endfor %}
                                     </ul>
-                                    {% endif %}
                                 </div>
                             </div>
 
